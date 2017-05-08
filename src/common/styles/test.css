@@ -1,0 +1,49 @@
+html, body, ul, ol, div {
+  padding: 0;
+  margin: 0; }
+
+body {
+  font-family: Helvetica, sans-serif;
+  color: #333; }
+
+nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none; }
+nav li {
+  display: inline-block; }
+nav a {
+  display: inline-block;
+  padding: 6px 12px;
+  text-decoration: none; }
+
+.box-border {
+  border: 1px solid #ccc;
+  box-sizing: border-box; }
+
+.message, .success, .error, .warning {
+  border: 1px solid #ccc;
+  padding: 10px;
+  color: #333; }
+
+.success {
+  border-color: green; }
+
+.error {
+  border-color: red; }
+
+.warning {
+  border-color: yellowgreen; }
+
+a {
+  text-decoration: none;
+  color: #08c; }
+  a:hover {
+    color: #006699; }
+
+.test {
+  color: red; }
+  .testmove {
+    color: rebeccapurple; }
+
+/*# sourceMappingURL=test.css.map */
