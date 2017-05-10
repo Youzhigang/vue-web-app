@@ -19,7 +19,7 @@ module.exports = {
       : config.dev.assetsPublicPath
   },
   resolve: {
-    extensions: ['.js', '.vue', '.json'], // 可以省略文件后缀
+    extensions: ['.js', '.vue', '.json', '.css', '.scss'], // 可以省略文件后缀
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src')
@@ -63,10 +63,10 @@ module.exports = {
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
       },
-      {
-        test:/\.(css|scss)$/,
-        loader:'style-loader!css-loader!sass-loader'
-      }
+      // {
+      //   test:/\.(css|scss)$/,
+      //   loader:'style-loader!css-loader!sass-loader'
+      // }
     ]
   }
 }

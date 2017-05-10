@@ -1,11 +1,11 @@
 $fontStack: Helvetica, sans-serif;
-$primaryColor:#333;
+$primaryColor: #333;
 
-@import 'reset.scss' ;
+@import 'normalize.scss' ;
 
-body{
-    font-family: $fontStack;
-    color:$primaryColor;
+body {
+  font-family: $fontStack;
+  color: $primaryColor;
 }
 
 
