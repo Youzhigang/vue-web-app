@@ -1,5 +1,30 @@
+html,body,div,ul,li{
+    box-sizing: border-box;
+    padding: 0px;
+    margin: 0px;
+}
+body,html{
+    line-height: 1;
+    font-weight: 200;
+    font-family:PingFang SC, Arial, Helvetica, sans-serif,
+}
+li{
+    list-style: none;
+}
+
+
+.clearfix{
+    display: inline-block;
+    &:after{
+        display: block;
+        content: '.';
+        clear: both;
+        height: 0;
+        visibility: hidden;
+    }
+}
 @media(min-device-pixel-ratio:1.5){
-    .border-px{
+    .border-1px{
         &:after{
             -webkit-transform: scaleY(0.7);
             transform: scaleY(0.7);
@@ -9,7 +34,7 @@
 
 
 @media(min-device-pixel-ratio:2){
-    .border-px{
+    .border-1px{
         &:after{
             -webkit-transform: scaleY(0.5);
             transform: scaleY(0.5);
