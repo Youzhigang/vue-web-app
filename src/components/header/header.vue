@@ -16,7 +16,8 @@
           {{seller.description}}/{{seller.deliveryTime}}分钟送达
         </div>
         <div v-if="seller.supports" class="support">
-          <span class="icon" :class="classMap[seller.supports[0].type]"></span><span class="text">{{seller.supports[0].description}}</span>
+          <vicon size=12 styl='_1' :index='seller.supports[0].type' >
+            </vicon><span class="text">{{seller.supports[0].description}}</span>
         </div>
        
         <div v-if="seller.supports" class="supports-count" >
@@ -26,7 +27,7 @@
       </div>
     </div>
     <div class="bulletin-wrapper" @touchstart= 'toggleDetail'>
-      <span class="bulletin-title"></span><span class="bulletin-text ">{{seller.bulletin}}</span>
+      <span class="bulletin-title"></span><span class="bulletin-text">{{seller.bulletin}}</span>
       <i class="icon icon-keyboard_arrow_right"></i>
     </div>
     <transition name='fade'>
@@ -35,7 +36,7 @@
         <h1 class="title">{{seller.name}}</h1>
         <!--star-->
         <div class="star-wrapper">
-          <star :size='48' :score = 'seller.score'>123</star>
+          <star :size=48 :score = 'seller.score'></star>
         </div>
 
         <!--line-->
@@ -45,7 +46,7 @@
         
         <ul class="content">
           <li v-for="item,index in seller.supports" >
-            <i class="icon" :class="classMap[item.type]"></i><span>{{item.description}}</span>
+            <vicon size=16 styl='_2' :index='item.type'></vicon><span>{{item.description}}</span>
           </li>
           <!--<span class="text"></span>-->
         </ul>
@@ -69,7 +70,8 @@
 <script>
 import star from '../star/star'
 import vline from '../line/line'
-import '../../common/styles/index.scss'
+import vicon from '../discount-icon/icon'
+// import '../../common/styles/index.scss'
 
 export default {
   name: 'vheader',
@@ -79,11 +81,11 @@ export default {
     }
   },
   components: {
-    star, vline
+    star, vline, vicon
   },
   data () {
     return {
-      showDetail: true
+      showDetail: false
     }
   },
   mounted () {
@@ -159,33 +161,10 @@ export default {
         }
         .support{
           margin: 10px 0 0 0;
-          .icon{
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            // margin-right: 4px;
-            background-size: 12px;
-            
-              &.decrease{
-                @include bg-image('decrease_1');
-              }
-              &.discount{
-                @include bg-image('discount_1');
-              }
-              &.guarantee{
-                @include bg-image('guarantee_1');
-              }
-              &.invoice{
-                @include bg-image('invoice_1');
-              }
-              &.special{
-                @include bg-image('special_1');
-              }
-          }
           .text{
             height: 12px;
             margin-left: 4px;
-            line-height: 12px;
+            line-height: 14px;
             font-size: 10px;
             vertical-align: top;
           }
@@ -205,11 +184,11 @@ export default {
               vertical-align: top;
               font-size: 10px;
             }
-            .icon{
-              // line-height: 24px;
-              font-size: 10px;
-              margin-left: 2px;
-            }
+            // .icon{
+            //   // line-height: 24px;
+            //   font-size: 10px;
+            //   margin-left: 2px;
+            // }
             
         }
       }
@@ -256,19 +235,22 @@ export default {
       top: 0;
       z-index: 100;
       width: 100%;
-      min-height: 100%;
+      
+      width: 100%;
+      height: 100%;
+      overflow: auto;
       background: rgba(7, 17, 27, 0.5);
-      overflow: scroll;
-      transition: all .2s;
+      opacity: 1;
       -webkit-backdrop-filter: blur(10px);
-      &.fade-transition{
-        opacity: 1;
-        // background: rgba(7, 17, 27, 0.5);
+      transition: all 0.5s;
+      &.fade-enter-active, &.fade-leave-active{  //状态结束会被移除
       }
-      &.fade-enter, &.fade-leave{
+      &.fade-enter, &.fade-leave, &.fade-leave-active{
+
         opacity: 0;
-        // background: rgba(7, 17, 27, 0);
+       
       }
+     
       .detail-content{
         flex: 1;
         .title{
@@ -294,29 +276,16 @@ export default {
             width: 16px;
             height: 16px;
             // margin-right: 4px;
-            vertical-align: top;
+            // vertical-align: top;
             background-size: 16px;
-              &.decrease{
-                @include bg-image('decrease_2');
-              }
-              &.discount{
-                @include bg-image('discount_2');
-              }
-              &.guarantee{
-                @include bg-image('guarantee_2');
-              }
-              &.invoice{
-                @include bg-image('invoice_2');
-              }
-              &.special{
-                @include bg-image('special_2');
-              }
+             
           }
           li{
             margin: 12px;
             span{
               margin-left: 6px;
               line-height: 16px;
+              vertical-align: top;
             }
           }
         }

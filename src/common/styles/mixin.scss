@@ -10,7 +10,12 @@
         content: ''
     }
 }
-
+@mixin border-none(){
+   
+    &:after{
+        display: none;
+    }
+}
 
 @mixin bg-image($url){
    
