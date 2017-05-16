@@ -1,6 +1,6 @@
 <template>
   <div class="goods">
-   <div class="menu-wrapper">
+   <div class="menu-wrapper" ref="menuWrapper">
       <ul class="menu-list">
         <li v-for="menu in goods" class="menu-item">
          <span class="menu"><vicon v-show="menu.type>0" size=12 :index='menu.type' styl="_3">
@@ -9,7 +9,7 @@
         </li>
       </ul>
    </div>
-   <div class="foods-wrapper">
+   <div class="foods-wrapper" ref="foodsWrapper">
       <ul>
         <li v-for="item in goods" class="food-list">
           <h1 class="title" v-text="item.name"></h1>
@@ -40,6 +40,7 @@
 <script>
 import '../../common/styles/index.scss'
 import vicon from '../discount-icon/icon'
+import BScroll from 'better-scroll'
 
 const ERR_OK = 200
 export default {
@@ -63,6 +64,11 @@ export default {
         if (res.status === ERR_OK) {
           console.log(res.data.goods)
           this.goods = res.data.goods
+          this.$nextTick(
+            () => {
+            this._initScroll()
+            }
+          )
         }
       }
     ).catch(
@@ -70,7 +76,13 @@ export default {
         console.log(err)
       }
     )
-    this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee']
+  },
+  methods: {
+    _initScroll () {
+      console.log(this.$refs)
+      this.menuScroll = new BScroll(this.$refs.menuWrapper, {})
+      this.foodScroll = new BScroll(this.$refs.foodsWrapper, {})
+    }
   }
 }
 </script>
