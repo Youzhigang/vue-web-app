@@ -2,7 +2,10 @@
   <div class="goods">
    <div class="menu-wrapper" ref="menuWrapper">
       <ul class="menu-list">
-        <li v-for="menu in goods" class="menu-item">
+        <li v-for="(menu,index) in goods" class="menu-item" 
+        :class="{'current': currentIndex ===index }"
+        @click=selectMenu(index,$event)
+        >
          <span class="menu"><vicon v-show="menu.type>0" size=12 :index='menu.type' styl="_3">
            </vicon>
            {{menu.name}}</span>
@@ -11,7 +14,7 @@
    </div>
    <div class="foods-wrapper" ref="foodsWrapper">
       <ul>
-        <li v-for="item in goods" class="food-list">
+        <li v-for="item in goods" class="food-list" ref="food-list-hook">
           <h1 class="title" v-text="item.name"></h1>
           <ul>
             <li v-for="food in item.foods" class="food-item">
@@ -55,19 +58,22 @@ export default {
   },
   data () {
     return {
-      goods: []
+      goods: [],
+      listHeight: [], // 每个区间的高度
+      scrollY: 0
     }
   },
   mounted () {
     this.$http.get('/api/goods').then(
       res => {
         if (res.status === ERR_OK) {
-          console.log(res.data.goods)
+          // console.log(res.data.goods)
           this.goods = res.data.goods
           this.$nextTick(
             () => {
             this._initScroll()
-            }
+            this._calculateHeight()
+            },
           )
         }
       }
@@ -77,11 +83,49 @@ export default {
       }
     )
   },
+  computed: {
+    currentIndex () {
+      // Array.prototype
+      for (let i = 0; i < this.listHeight.length; i++) {
+        let height1 = this.listHeight[i]
+        let height2 = this.listHeight[i + 1] // 最后一个 height2 undefined
+        if (height2 === undefined ||
+            (this.scrollY >= height1 && this.scrollY < height2)) {
+          return i
+        }
+      }
+      return 0
+    }
+  },
   methods: {
     _initScroll () {
-      console.log(this.$refs)
-      this.menuScroll = new BScroll(this.$refs.menuWrapper, {})
-      this.foodScroll = new BScroll(this.$refs.foodsWrapper, {})
+      // console.log(this.$refs)
+      this.menuScroll = new BScroll(this.$refs.menuWrapper, {click: true})
+      this.foodScroll = new BScroll(this.$refs.foodsWrapper, {
+        probeType: 3
+      })
+      this.foodScroll.on('scroll', (pos) => {
+        this.scrollY = Math.abs(Math.round(pos.y))
+      })
+    },
+    _calculateHeight () {
+      let foodList = this.$refs['food-list-hook']
+      let _height = 0
+      this.listHeight.push(_height)
+      Array.prototype.forEach.call(foodList, (item, index) => {
+        _height += item.clientHeight
+        this.listHeight.push(_height)
+      })
+    },
+    selectMenu (index, event) {
+      if (event._constructed) {
+        console.log(index)
+        // this.foodScroll.scrollTo(this.listHeight[index], 333)
+        let foodList = this.$refs['food-list-hook']
+        this.foodScroll.scrollToElement(foodList[index], 300)
+      } else {
+        return
+      }
     }
   }
 }
@@ -103,12 +147,23 @@ export default {
     background-color: #f3f5f7;
     color: rgb(20, 20, 20);
     .menu-list{
-      padding: 0 12px;
       font-size: 12px;
       .menu-item{
         display: table;
         height: 54px;
         line-height: 14px;
+        padding: 0 12px;
+        &.current{
+          
+          position: relative;
+          margin-top: -1px;
+          z-index: 10;
+          background-color: #fff;
+          font-weight: 700;
+          span{
+            @include border-none();
+          }
+        }
         .menu{
           display: table-cell;
           vertical-align: middle;
