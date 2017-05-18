@@ -15,13 +15,12 @@
     <div class="content">
       content
     </div>
-    <router-view></router-view>
+    <router-view :seller='seller'></router-view>
   </div> 
 </template>
 
 <script>
 import vheader from './components/header/header'
-
 
 const ERR_OK = 200
 export default {

@@ -30,6 +30,12 @@ li{
             transform: scaleY(0.7);
         }
     }
+    .border-2px{
+        &:after{
+            -webkit-transform: scaleY(1.3);
+            transform: scaleY(1.3);
+        }
+    }
 }
 
 

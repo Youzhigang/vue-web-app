@@ -37,6 +37,7 @@
         </li>
       </ul>
    </div>
+   <showcart :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></showcart>
   </div>
 </template>
 
@@ -44,6 +45,7 @@
 import '../../common/styles/index.scss'
 import vicon from '../discount-icon/icon'
 import BScroll from 'better-scroll'
+import showcart from '../showcart/showcart'
 
 const ERR_OK = 200
 export default {
@@ -54,7 +56,7 @@ export default {
     }
   },
   components: {
-    vicon
+    vicon, showcart
   },
   data () {
     return {
@@ -160,6 +162,7 @@ export default {
           z-index: 10;
           background-color: #fff;
           font-weight: 700;
+          @include border-2px(blue);
           span{
             @include border-none();
           }
