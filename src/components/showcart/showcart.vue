@@ -14,7 +14,7 @@
                ￥{{totalPrice}}元
             </div>
             <!--配送价-->
-            <div class="desc">另需配送费￥{{deliverPrice}}元</div>
+            <div class="desc">另需配送费￥{{deliveryPrice}} 元</div>
         </div> 
         <!--右侧固定宽度-->
         <div class="content-right">
@@ -43,7 +43,7 @@ export default {
                 ]
             }
        },
-       deliverPrice: {
+       deliveryPrice: {
            type: Number,
            default: 0
        },

@@ -235,20 +235,16 @@ export default {
       top: 0;
       z-index: 100;
       width: 100%;
-      
-      width: 100%;
       height: 100%;
       overflow: auto;
       background: rgba(7, 17, 27, 0.5);
       opacity: 1;
       -webkit-backdrop-filter: blur(10px);
-      transition: all 0.5s;
+      transition: .5s all linear;
       &.fade-enter-active, &.fade-leave-active{  //状态结束会被移除
       }
-      &.fade-enter, &.fade-leave, &.fade-leave-active{
-
+      &.fade-enter, &.fade-leave, &.fade-leave-active,&.fade-enter-active {
         opacity: 0;
-       
       }
      
       .detail-content{

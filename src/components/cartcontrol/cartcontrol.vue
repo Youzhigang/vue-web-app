@@ -1,7 +1,11 @@
 <template>
     <div class="cartcontrol">
-        <div class="cart-decrease icon-remove_circle_outline" v-show="food.count>0" @click='reduceCart($event)'></div>
-        <div class="cart-count" v-show="food.count>0"> {{food.count}}</div>
+        <transition name='move'>
+            <div class="cart-decrease icon-remove_circle_outline" v-show="food.count>0" @click='reduceCart($event)'></div>
+        </transition>
+        <transition name='show-count'>
+            <div class="cart-count" v-show='food.count > 0'> {{food.count}}</div>
+        </transition>
         <div class="cart-increase icon-add_circle" @click='addCart($event)'></div>
     </div>  
 </template>
@@ -13,11 +17,11 @@ export default {
   name: 'cartcontrol',
   props: {
       food: {
-          type: Object
+          type: Object // 没有count属性, so $set
       }
   },
   mounted () {
-     // console.log(this.food)
+    //  console.log(this.food)
   },
   methods: {
     addCart (e) {
@@ -53,13 +57,39 @@ export default {
             font-size: 24px;
             color: rgb(0, 160, 220);
         }
+        .cart-decrease{
+            transition: .5s all linear;
+            // &.move-enter-active, &.move-leave-active{  //状态结束会被移除
+            // }
+            &.move-enter{
+                opacity: 0;
+                transform: translateX(24px) rotateZ(180deg);
+            }
+            &.move-enter-active{
+                opacity: 1;
+            }
+            &.move-leave{
+                opacity: 1;
+            }
+            &.move-leave-active{
+                transform: translateX(24px) rotateZ(180deg);
+                opacity: 0;
+            }
+        }
         .cart-count{
             display: inline-block;
+            width: 12px;
+            text-align: center;
             font-size: 10px;
             color: rgb(147, 153, 159);
             line-height: 24px;
             vertical-align: top;
+            transition: .5s all;
+            &.show-count-enter-active, &.show-count-leave-active{  //状态结束会被移除
+            }
+            &.show-count-enter, &.show-count-leave, &.show-count-leave-active{
+                opacity: 0;
+            }
         }
-      
     }
 </style>
