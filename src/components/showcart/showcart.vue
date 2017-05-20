@@ -7,7 +7,7 @@
                 <div class="icon">
                     <i class="icon-shopping_cart"></i>
                 </div>
-                <div class="badge"></div>
+                <div class="badge">{{totalCount}}</div>
             </div>
             <!--价格-->
             <div class="price">
@@ -18,20 +18,20 @@
         </div> 
         <!--右侧固定宽度-->
         <div class="content-right">
-            <div class="pay">
-            ￥{{minPrice}}元起送
-
+            <div class="pay" :class="[minPrice < totalPrice ? 'enough' : 'not-enough']">
+            <!--￥{{minPrice}}元起送-->
+            {{payDesc}}
             </div>
         </div> 
     </div>
   </div>
 </template>
 
-1
+
 <script>
 export default {
-   name: 'showcart',
-   props: {
+    name: 'showcart',
+    props: {
        selectFoods: {
             type: Array,
             default () {
@@ -51,7 +51,7 @@ export default {
            type: Number,
            default: 0
        }
-   },
+    },
     computed: {
         totalPrice () {
             let total = 0
@@ -66,6 +66,15 @@ export default {
                count += item.count
             })
             return count
+        },
+        payDesc () {
+            if (this.totalPrice === 0) {
+                return `￥${this.minPrice}元起送`
+            } else if (this.totalPrice < this.minPrice) {
+                return `还差￥${this.minPrice - this.totalPrice}起送`
+            } else {
+                return '去结算'
+            }
         }
     }
 }
@@ -110,6 +119,21 @@ export default {
                         color: #80858a;
                     }
                 }
+                .badge{
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    width: 24px;
+                    height: 16px;
+                    line-height: 16px;
+                    text-align: center;
+                    border-radius: 16px;
+                    font-size: 9px;
+                    font-weight: 700;
+                    color: #fff;
+                    background-color: rgb(240,20,20);
+                    box-shadow: 0 4px 8px 0px rgba(0,0,0,0.4);
+                }
             }
             .price{
                 display: inline-block;
@@ -132,14 +156,20 @@ export default {
         .content-right{
             flex: 0 0 105px;
             width: 105px;
-            
             .pay{
                 background-color: rgba(255,255, 255, 0.4);
-            font-size: 14px;
-            font-weight: 700;
-            line-height: 48px;
-            color:#2b343c;
-            text-align: center;
+                font-size: 14px;
+                font-weight: 700;
+                line-height: 48px;
+                color:#2b343c;
+                text-align: center;
+                &.not-enough{
+                    background-color: rgba(255,255, 255, 0.4);
+                }
+                &.enough{
+                    background-color: #00b43c;
+                    color: #fff;
+                }
             }
         }
     }

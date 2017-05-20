@@ -31,13 +31,20 @@
                    <span class="current-price">￥{{food.price}}元</span>
                    <span class="old-price" v-show="food.oldPrice">￥{{food.oldPrice}}元</span>
                  </div>
+                 <div class="cartcontrol-wrapper">
+                    <cartcontrol :food='food'></cartcontrol>
+                 </div>
               </div>
             </li>
           </ul>
         </li>
       </ul>
    </div>
-   <showcart :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></showcart>
+   <showcart 
+      :deliveryPrice="seller.deliveryPrice" 
+      :minPrice="seller.minPrice"
+    >
+   </showcart>
   </div>
 </template>
 
@@ -46,6 +53,7 @@ import '../../common/styles/index.scss'
 import vicon from '../discount-icon/icon'
 import BScroll from 'better-scroll'
 import showcart from '../showcart/showcart'
+import cartcontrol from '../cartcontrol/cartcontrol'
 
 const ERR_OK = 200
 export default {
@@ -56,7 +64,7 @@ export default {
     }
   },
   components: {
-    vicon, showcart
+    vicon, showcart, cartcontrol
   },
   data () {
     return {
@@ -104,7 +112,7 @@ export default {
       // console.log(this.$refs)
       this.menuScroll = new BScroll(this.$refs.menuWrapper, {click: true})
       this.foodScroll = new BScroll(this.$refs.foodsWrapper, {
-        probeType: 3
+        probeType: 3, click: true
       })
       this.foodScroll.on('scroll', (pos) => {
         this.scrollY = Math.abs(Math.round(pos.y))
@@ -249,6 +257,11 @@ export default {
               font-size: 10px;
               color: rgb(147, 153, 159);
             }
+          }
+          .cartcontrol-wrapper{
+            position: absolute;
+            right: 0;
+            bottom: 12px;
           }
         }
       }
