@@ -23,6 +23,12 @@
             {{payDesc}}
             </div>
         </div> 
+        <div class="ball-container">
+            <transition-group >
+                <div v-for="ball in balls" v-show="ball.show" key="ball"></div>
+            </transition-group>
+            <div class="inner"></div>
+        </div>
     </div>
   </div>
 </template>
@@ -51,6 +57,16 @@ export default {
            type: Number,
            default: 0
        }
+    },
+    data () {
+        return {
+            balls: [
+                {show: false},
+                {show: false},
+                {show: false},
+                {show: false}
+            ]
+        }
     },
     computed: {
         totalPrice () {
@@ -171,6 +187,11 @@ export default {
                     color: #fff;
                 }
             }
+        }
+    }
+    .ball-container{
+        .ball{
+
         }
     }
 }

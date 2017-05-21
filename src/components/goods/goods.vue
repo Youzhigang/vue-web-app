@@ -32,7 +32,8 @@
                    <span class="old-price" v-show="food.oldPrice">￥{{food.oldPrice}}元</span>
                  </div>
                  <div class="cartcontrol-wrapper">
-                    <cartcontrol :food='food'></cartcontrol>
+                    <cartcontrol @add='addFood' :food='food'></cartcontrol>
+                    <!--cartcontrol emit add > addFood >_drop>drop -->
                  </div>
               </div>
             </li>
@@ -40,12 +41,12 @@
         </li>
       </ul>
    </div>
-   <showcart 
+   <shopcart ref="shopCart"
       :selectFoods="selectFoods"
       :deliveryPrice="seller.deliveryPrice" 
       :minPrice="seller.minPrice"
     >
-   </showcart>
+   </shopcart>
   </div>
 </template>
 
@@ -53,7 +54,7 @@
 import '../../common/styles/index.scss'
 import vicon from '../discount-icon/icon'
 import BScroll from 'better-scroll'
-import showcart from '../showcart/showcart'
+import shopcart from '../shopcart/shopcart'
 import cartcontrol from '../cartcontrol/cartcontrol'
 
 const ERR_OK = 200
@@ -65,7 +66,7 @@ export default {
     }
   },
   components: {
-    vicon, showcart, cartcontrol
+    vicon, shopcart, cartcontrol
   },
   data () {
     return {
@@ -148,6 +149,14 @@ export default {
       } else {
         return
       }
+    },
+    addFood (t) {
+      this._drop(t)
+    },
+    _drop (target) {
+      this.$nextTick(() => {
+        this.$refs.shopCart.drop(target)
+      })
     }
   }
 }

@@ -11,7 +11,6 @@
 </template>
 
 <script>
-// import Vue from 'vue'
 
 export default {
   name: 'cartcontrol',
@@ -30,6 +29,7 @@ export default {
         }
         this.food.count ? this.$set(this.food, 'count', this.food.count += 1)
         : this.$set(this.food, 'count', 1)
+        this.$emit('add', event.target)
        /*
         if (this.food.count) {
             this.$set(this.food, 'count', this.food.count += 1)
