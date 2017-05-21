@@ -1,7 +1,7 @@
 $fontStack: Helvetica, sans-serif;
 $primaryColor: #333;
 
-@import 'normalize.scss' ;
+@import 'normalize.css' ;
 
 body {
   font-family: $fontStack;
@@ -67,7 +67,7 @@ a {
 }
 .test{
     color: red;
-    &move{
+    &.move{
         color:rebeccapurple;
     }
 }

@@ -1,7 +1,4 @@
-html, body, ul, ol, div {
-  padding: 0;
-  margin: 0; }
-
+@import url(normalize.css);
 body {
   font-family: Helvetica, sans-serif;
   color: #333; }
@@ -43,7 +40,7 @@ a {
 
 .test {
   color: red; }
-  .testmove {
+  .test.move {
     color: rebeccapurple; }
 
 /*# sourceMappingURL=test.css.map */

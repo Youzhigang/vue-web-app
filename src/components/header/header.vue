@@ -230,7 +230,7 @@ export default {
       flex-flow: column;
       padding: 64px 36px 32px 36px;
       position: fixed;
-      z-index: 10;
+      z-index: 1000;
       left: 0;
       top: 0;
       z-index: 100;
