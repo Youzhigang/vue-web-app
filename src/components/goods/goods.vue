@@ -1,4 +1,5 @@
 <template>
+<div>
   <div class="goods">
    <div class="menu-wrapper" ref="menuWrapper">
       <ul class="menu-list">
@@ -17,7 +18,7 @@
         <li v-for="item in goods" class="food-list" ref="food-list-hook">
           <h1 class="title" v-text="item.name"></h1>
           <ul>
-            <li v-for="food in item.foods" class="food-item">
+            <li v-for="food in item.foods" class="food-item" @click.stop.prevent='selectFood(food,$event)'>
               <div class="icon">
                 <img :src="food.icon" >
               </div>
@@ -48,6 +49,8 @@
     >
    </shopcart>
   </div>
+  <foodDetail :food='selectedFood' @add="addFood" ref="foodDetail"></foodDetail>
+</div>
 </template>
 
 <script>
@@ -56,6 +59,7 @@ import vicon from '../discount-icon/icon'
 import BScroll from 'better-scroll'
 import shopcart from '../shopcart/shopcart'
 import cartcontrol from '../cartcontrol/cartcontrol'
+import foodDetail from '../fooddetail/fooddetail'
 
 const ERR_OK = 200
 export default {
@@ -66,13 +70,14 @@ export default {
     }
   },
   components: {
-    vicon, shopcart, cartcontrol
+    vicon, shopcart, cartcontrol, foodDetail
   },
   data () {
     return {
       goods: [],
       listHeight: [], // 每个区间的高度
-      scrollY: 0
+      scrollY: 0,
+      selectedFood: {}
     }
   },
   mounted () {
@@ -157,6 +162,13 @@ export default {
       this.$nextTick(() => {
         this.$refs.shopCart.drop(target)
       })
+    },
+    selectFood (food, e) {
+      if (!e._constructed) {
+        return
+      }
+      this.selectedFood = food
+      this.$refs.foodDetail.show()
     }
   }
 }

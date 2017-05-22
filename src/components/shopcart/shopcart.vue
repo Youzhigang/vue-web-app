@@ -330,10 +330,10 @@
             position: fixed;
             left: 32px;
             bottom: 22px;
-            z-index: 300;
+            // z-index: 300;
             transition: .5s  all cubic-bezier(0.49, -0.29, 0.75, 0.41);
             .inner{
-                z-index: 300;
+                // z-index: 300;
                 width: 16px;
                 height: 16px;
                 border-radius: 50%;
