@@ -4,7 +4,7 @@
     <div class="food-content">
         <div class="image-header"> <!---->
             <img :src="food.image" alt="">
-            <i class="icon-arrow_lift"  @click="show()"></i>
+            <i class="icon-arrow_lift"  @click.stop.prevent="show()"></i>
         </div>
         <div class="content">
             <div class="title">{{food.name}}</div>
@@ -15,24 +15,43 @@
                 <span class="current-price">￥{{food.price}}元</span>
                 <span class="old-price" v-show="food.oldPrice">￥{{food.oldPrice}}元</span>
             </div>
-        </div>
-        <div class="cartcontrol-wrapper">
-            <cartcontrol v-show="food.count>0" :food='food'  @add='emitAddFood'></cartcontrol> 
-        </div>
-        <transition name="fade">
-            <div class="add-tocart" v-show="!food.count || food.count === 0"
-            @click.stop.prevent='addFirst($event)'>
-                加入购物车
+            <div class="cartcontrol-wrapper">
+                <cartcontrol v-show="food.count>0" :food='food'  @add='emitAddFood'></cartcontrol> 
             </div>
-        </transition>
+            <transition name="fade">
+                <div class="add-tocart" v-show="!food.count || food.count === 0"
+                @click.stop.prevent='addFirst($event)'>
+                    加入购物车
+                </div>
+            </transition>
+        </div>
+        <split v-show="food.info"></split>
+    <div class="info" v-show="food.info">
+        <div class="title">商品信息</div>
+        <p class="text">{{food.info}}</p>
+    </div>
+    <split v-show="food.rating"></split>
+    <div class="rating">
+        <div class="title">商品评价</div>
+        <!--select pannel-->
+        <ratingselect 
+        :ratings='food.ratings' 
+        :selectType='selectType' 
+        :onlyContent='onlyContent'
+        :desc='desc'></ratingselect>
+    </div>
     </div>
   </div>
 </transition>
 </template>
 
 <script>
+import split from '../split/split';
+import ratingselect from '../ratingselect/ratingselect';
 import BScroll from 'better-scroll';
 import cartcontrol from '../cartcontrol/cartcontrol';
+
+const All = 2
 
 export default {
   name: 'foodDetail',
@@ -42,11 +61,18 @@ export default {
       }
   },
   components: {
-    cartcontrol
+    cartcontrol, split, ratingselect
   },
   data () {
       return {
-          showFlag: false
+          showFlag: false,
+          selectType: All,
+          onlyContent: true,
+          desc: {
+              all: '全部',
+              positive: '推荐',
+              negative: '吐槽'
+          }
       }
   },
   created () {},
@@ -60,7 +86,7 @@ export default {
           })
       },
       addFirst (e) {
-        if (!e._constructed) {
+        if (!e._constructed) { //  组织默认的click事件, 使用bs派发的事件
             return
         }
         this.$set(this.food, 'count', 1)
@@ -123,6 +149,7 @@ export default {
     }
     .content{
         padding: 18px;
+        position: relative;
         .title{
             font-size: 14px;
             margin-bottom: 8px;
@@ -154,35 +181,52 @@ export default {
               color: rgb(147, 153, 159);
             }
         }
-    }
-    .add-tocart{
-        position: absolute;
-        // width: 74px;
-        height: 24px;
-        right: 18px;
-        bottom: 18px;
-        z-index: 10;
-        height: 24px;
-        line-height: 24px;
-        padding: 0 12px;
-        font-size: 10px;
-        background-color: rgb(0, 160, 220);
-        color:#fff;
-        border-radius: 12px;
-        opacity: 1; // 最终态
+        .add-tocart{
+            position: absolute;
+            // width: 74px;
+            height: 24px;
+            right: 18px;
+            bottom: 18px;
+            z-index: 10;
+            height: 24px;
+            line-height: 24px;
+            padding: 0 12px;
+            font-size: 10px;
+            background-color: rgb(0, 160, 220);
+            color:#fff;
+            border-radius: 12px;
+            opacity: 1; // 最终态
 
-        &.fade-enter-active, &.fade-leave-active{
-          transition: all 0.2s;
+            &.fade-enter-active, &.fade-leave-active{
+                transition: all 0.2s;
+            }
+            &.fade-enter, &.fade-leave-active{
+                opacity: 0;
+                z-index: -1;
+            }
         }
-        &.fade-enter, &.fade-leave-active{
-          opacity: 0;
-          z-index: -1;
+        .cartcontrol-wrapper{
+            position: absolute;
+            right: 12px;
+            bottom: 12px;
         }
     }
-    .cartcontrol-wrapper{
-        position: absolute;
-        right: 12px;
-        bottom: 12px;
+    .info{
+        padding: 18px;
+        .title{
+            font-size: 14px;
+            margin-bottom: 6px;
+            line-height: 14px;
+            color: rgb(7,17 , 27);
+            // color:#000;
+            font-weight: 600;
+        }
+        .text{
+            color:rgb(77,85,93);
+            line-height: 24px;
+            padding:0 8px;
+            font-size: 12px;
+        }
     }
 }
 </style>
