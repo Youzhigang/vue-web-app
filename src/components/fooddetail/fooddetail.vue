@@ -26,19 +26,36 @@
             </transition>
         </div>
         <split v-show="food.info"></split>
-    <div class="info" v-show="food.info">
-        <div class="title">商品信息</div>
-        <p class="text">{{food.info}}</p>
-    </div>
-    <split v-show="food.rating"></split>
+        <div class="info" v-show="food.info">
+            <div class="title">商品信息</div>
+            <p class="text">{{food.info}}</p>
+        </div>
+        <split v-show="food.rating"></split>
     <div class="rating">
         <div class="title">商品评价</div>
         <!--select pannel-->
         <ratingselect 
+        @select='selectRating'
+        @toggle='toggle'
         :ratings='food.ratings' 
         :selectType='selectType' 
         :onlyContent='onlyContent'
         :desc='desc'></ratingselect>
+        <div class="rating-wrapper">
+            <ul v-show="food.ratings && food.ratings.length">
+                <li v-for="rating in food.ratings" class="rating-item" v-show="needShow(rating.rateType,rating.text )">
+                    <div class="user">
+                        <div class="name">{{rating.username}}</div>
+                        <img class="avatar" width="12" height="12" :src="rating.avatar" alt="">
+                    </div>
+                    <div class="time">{{rating.rateTime | time2Date}}</div>
+                    <p class="text">
+                        <span :class="{'icon-thumb_up':rating.rateType===0, 'icon-thumb_down':rating.rateType ===1}"></span> {{rating.text}}
+                    </p>
+                </li>
+            </ul>
+            <div class="no-rating" v-show="!food.ratings || !food.ratings.length">暂无评价</div>
+        </div>
     </div>
     </div>
   </div>
@@ -50,8 +67,12 @@ import split from '../split/split';
 import ratingselect from '../ratingselect/ratingselect';
 import BScroll from 'better-scroll';
 import cartcontrol from '../cartcontrol/cartcontrol';
+import {formatDate} from '../../common/js/utils.js'
 
+console.log(formatDate)
 const All = 2
+// const POSITIVE = 0
+// const NEGATIVE = 1
 
 export default {
   name: 'foodDetail',
@@ -66,7 +87,7 @@ export default {
   data () {
       return {
           showFlag: false,
-          selectType: All,
+          selectType: 0,
           onlyContent: true,
           desc: {
               all: '全部',
@@ -76,6 +97,12 @@ export default {
       }
   },
   created () {},
+  filters: {
+      time2Date (timestamp) {
+         // return new Date(timestamp).toLocaleString()
+        return formatDate(new Date(timestamp), 'yyyy-MM-dd hh:mm')
+      }
+  },
   methods: {
       show () {
           this.showFlag = !this.showFlag
@@ -94,12 +121,36 @@ export default {
       },
       emitAddFood (target) {
         this.$emit('add', target);
+      },
+      needShow (type, text) {
+          if (this.onlyContent && !text) {
+              return false
+          } else if (this.selectType === All) {
+              return true
+          } else {
+              return type === this.selectType
+          }
+      },
+      selectRating (type) {
+        console.log(type)
+        this.selectType = type
+        this.$nextTick(() => {
+            this.scroll.refresh()
+            })
+      },
+      toggle () {
+        this.onlyContent = !this.onlyContent
+        this.$nextTick(() => {
+            this.scroll.refresh()
+        })
       }
   }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+@import '../../common/styles/mixin.scss';
+
 .food-detail{
     background-color: #fff;
     position: fixed;
@@ -115,7 +166,7 @@ export default {
         transform: translate3d(100%, 0, 0)  // 开始 下一帧被移除
     }
     &.move-enter-active{
-        transition: .5s all linear;    // 移除上一帧后 加上
+        transition: .3s all linear;    // 移除上一帧后 加上
     }
     &.move-leave{    
         // transition: 2s all linear;
@@ -123,7 +174,7 @@ export default {
     }
     &.move-leave-active{   // 结束状态
         transform: translate3d(100%,0,0);
-        transition: .5s all linear;
+        transition: .3s all linear;
     }
     .image-header{
         position: relative;
@@ -228,5 +279,68 @@ export default {
             font-size: 12px;
         }
     }
+    .rating{
+        padding: 18px;
+        .title{
+            font-size: 14px;
+            font-weight: 600;
+            color: rgb(7,12,27);
+            line-height: 14px;
+        }
+        .rating-wrapper{
+            padding: 0 18px;
+            .rating-item{
+                position: relative;
+                padding: 16px 0 4px 0;
+                right: 0;
+                @include border-1px(rgba(7,17,27,0.1))
+            }
+            .user{
+                position: absolute;
+                right: 0;
+                top:16px;
+                // font-size: 0;
+                line-height: 12px;
+                .name{
+                    margin-right: 6px;
+                    display: inline-block;
+                    vertical-align: top;
+                    font-size: 10px;
+                    color:rgb(147,153,159);
+                }
+                .avatar{
+                    border-radius: 50%;
+                }
+            }
+            .time{
+                margin-bottom: 6px;
+                font-size: 10px;
+                height: 12px;
+                color:rgb(147, 153, 159)
+            }
+            .text{
+                line-height: 16px;
+                font-size: 12px;
+                color:rgb(7,12,27);
+                .icon-thumb_up, .icon-thumb_down{
+                    margin-right: 4px;
+                    line-height: 16px;
+                    font-size: 12px;
+                }
+                .icon-thumb_up{
+                    color:rgb(0,160,220)
+                }
+                .icon-thumb_down{
+                    color:rgb(147, 153, 159)
+                }
+            }
+            .no-rating{
+                padding: 16px 0;
+                font-size: 12px;
+                color: rgb(147, 153, 159)
+            }
+        }
+    }
+    
 }
 </style>
