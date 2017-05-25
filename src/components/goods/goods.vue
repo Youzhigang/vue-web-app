@@ -179,7 +179,8 @@ export default {
 
 .goods{
   position: absolute;
-  top: 174px;
+  width: 100%;
+  top: 177px;
   bottom: 46px;
   left: 0;
   overflow: hidden;

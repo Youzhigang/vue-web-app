@@ -12,9 +12,9 @@
         <router-link to="/seller">商家</router-link>
       </div>
     </div>
-    <div class="content">
+    <!--<div class="content">
       content
-    </div>
+    </div>-->
     <keep-alive>
     <router-view :seller='seller' ></router-view>
     </keep-alive>
@@ -62,6 +62,7 @@ export default {
     width: 100%;
     height: 40px;
     line-height: 40px;
+    
     // border-bottom: 1px solid rgba(7,17,27,0.1);
     @include border-1px(rgba(7,17,27,0.1));
       &-item{
