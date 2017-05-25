@@ -18,8 +18,12 @@
         </div>
       </div>
       <split></split>
+      <ratingselect
+        :ratings='ratings.ratings' 
+        :selectType='selectType' 
+        :onlyContent='onlyContent'
+      ></ratingselect>
     </div>
-   
   </div>
 </template>
 
@@ -27,6 +31,10 @@
 // import BScroll from 'better-scroll';
 import split from '../split/split';
 import star from '../star/star';
+import ratingselect from '../ratingselect/ratingselect';
+
+const ERR_OK = 200
+const ALL = 2
 
 export default {
   name: 'ratings',
@@ -35,13 +43,44 @@ export default {
       type: Object
     }
   },
+  data () {
+    return {
+      ratings: [],
+      selectType: ALL,
+      onlyContent: true,
+      desc: {
+              all: '全部',
+              positive: '推荐',
+              negative: '吐槽'
+          }
+    }
+  },
+  created () {
+    this.$http.get('/api/ratings').then(
+      res => {
+        console.log(res)
+        if (res.status === ERR_OK) {
+          // console.log(res.data.goods)
+          this.ratings = res.data.ratings
+          // this.$nextTick()
+        }
+      }
+    ).catch(
+      err => {
+        console.log(err)
+      }
+    )
+  },
   components: {
-    split, star
+    split, star, ratingselect
   }
 }
 </script>
 
 <style lang='scss' scoped>
+.ratings-content{
+        width: 100%;
+      }
 .ratings{
   position: absolute;
   width: 100%;
@@ -82,6 +121,7 @@ export default {
       flex:1;
       padding-left: 24px;
       width: 100%;
+      
       .rating-star{
         // padding-left: 24px;
         font-size: 14px;
