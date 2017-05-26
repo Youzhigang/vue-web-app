@@ -7,9 +7,7 @@
         :class="{'current': currentIndex ===index }"
         @click=selectMenu(index,$event)
         >
-         <span class="menu"><vicon v-show="menu.type>0" size=12 :index='menu.type' styl="_3">
-           </vicon>
-           {{menu.name}}</span>
+         <span class="menu"><vicon v-show="menu.type>0" size=12 :index='menu.type' styl="_3"></vicon>{{menu.name}}</span>
         </li>
       </ul>
    </div>

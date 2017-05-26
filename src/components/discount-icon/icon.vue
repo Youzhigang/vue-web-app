@@ -16,10 +16,11 @@ export default {
       type: Number
     },
     size: {
-      type: String
+      type: String  // 白底 _1:24@2x 36@3x  // _2: 32@2x 48@3x   
+                    // 反色 _3:24@2x 36@3x   _4: 32@2x 48@3x
     },
     styl: {
-        type: String
+        type: String // _1  _2 _3 _4
     }
   },
   data () {
@@ -46,7 +47,21 @@ export default {
 .icon{
     display: inline-block;
     
-    
+    &.decrease_4{
+        @include bg-image('decrease_4');
+    }
+     &.discount_4{
+        @include bg-image('discount_4');
+    }
+    &.guarantee_4{
+        @include bg-image('guarantee_4');
+    }
+    &.special_4{
+        @include bg-image('special_4');
+    }
+     &.invoice_4{
+        @include bg-image('invoice_4');
+    }
     &.decrease_3{
         @include bg-image('decrease_3');
     }
