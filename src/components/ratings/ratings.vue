@@ -1,5 +1,5 @@
 <template>
-  <div class="ratings">
+  <div class="ratings" >
     <div class="ratings-content">
       <div class="overview">
         <div class="overview-left">
@@ -23,6 +23,27 @@
         :selectType='selectType' 
         :onlyContent='onlyContent'
       ></ratingselect>
+      <div class="rating-wrapper" ref="ratingsDom">
+        <ul>
+          <li v-for="rating in ratings" class="rating-item">
+            <div class="avatar">
+              <img :src="rating.avatar" alt="" width="28" height="28"> 
+            </div>
+            <div class="content">
+              <div class="username" v-text="rating.username"></div>
+              <div class="time">{{rating.rateTime}}</div>
+              <div class="star-wrapper">
+                <star :size=18 :score='rating.score'></star>
+              </div>
+              <p class="text" v-text="rating.text"></p>
+              <div class="recommend" v-show="rating.recommend && rating.recommend.length">
+                <span class="icon-thumb_up"></span>
+                <span v-for="item in rating.recommend" class="recommend-item">{{item}}</span>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -32,6 +53,7 @@
 import split from '../split/split';
 import star from '../star/star';
 import ratingselect from '../ratingselect/ratingselect';
+import BScroll from 'better-scroll';
 
 const ERR_OK = 200
 const ALL = 2
@@ -50,8 +72,8 @@ export default {
       onlyContent: true,
       desc: {
               all: '全部',
-              positive: '推荐',
-              negative: '吐槽'
+              positive: '满意',
+              negative: '不满意'
           }
     }
   },
@@ -62,7 +84,9 @@ export default {
         if (res.status === ERR_OK) {
           // console.log(res.data.goods)
           this.ratings = res.data.ratings
-          // this.$nextTick()
+          this.$nextTick(() => {
+            this._initScroll()
+          })
         }
       }
     ).catch(
@@ -70,6 +94,11 @@ export default {
         console.log(err)
       }
     )
+  },
+  methods: {
+     _initScroll () {
+      this.ratingScroll = new BScroll(this.$refs.ratingsDom, {click: true})
+    }
   },
   components: {
     split, star, ratingselect
@@ -142,6 +171,10 @@ export default {
         }
       }
     }
+  }
+  .rating-wrapper{
+    height: 100%;
+    overflow: hidden;
   }
 }
 </style>
