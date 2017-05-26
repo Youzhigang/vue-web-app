@@ -53,7 +53,7 @@ export default {
 @import '../../common/styles/mixin.scss';
   .star{
     font-size: 0;
-    
+    // display: line-block;
     .star-item{
        display: inline-block;
        background-repeat: no-repeat;

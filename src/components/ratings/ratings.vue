@@ -1,6 +1,6 @@
 <template>
-  <div class="ratings" >
-    <div class="ratings-content">
+  <div class="ratings" ref="ratingsDom">
+    <div class="ratings-content" >
       <div class="overview">
         <div class="overview-left">
           <div class="score">{{seller.score}}</div>
@@ -23,7 +23,7 @@
         :selectType='selectType' 
         :onlyContent='onlyContent'
       ></ratingselect>
-      <div class="rating-wrapper" ref="ratingsDom">
+      <div class="rating-wrapper" >
         <ul>
           <li v-for="rating in ratings" class="rating-item">
             <div class="avatar">
@@ -31,10 +31,10 @@
             </div>
             <div class="content">
               <div class="username" v-text="rating.username"></div>
-              <div class="time">{{rating.rateTime}}</div>
               <div class="star-wrapper">
-                <star :size=18 :score='rating.score'></star>
-              </div>
+                <star :size=24 :score='rating.score'></star>
+              </div><span class="time">{{seller.deliveryTime}}分钟送达</span>
+              <div class="rating-date">{{rating.rateTime  | formater}}</div>
               <p class="text" v-text="rating.text"></p>
               <div class="recommend" v-show="rating.recommend && rating.recommend.length">
                 <span class="icon-thumb_up"></span>
@@ -54,6 +54,7 @@ import split from '../split/split';
 import star from '../star/star';
 import ratingselect from '../ratingselect/ratingselect';
 import BScroll from 'better-scroll';
+import {formatDate} from '../../common/js/utils.js';
 
 const ERR_OK = 200
 const ALL = 2
@@ -95,6 +96,11 @@ export default {
       }
     )
   },
+  filters: {
+    formater (v) {
+      return formatDate(new Date(v), 'yyyy-MM-dd hh:mm')
+    }
+  },
   methods: {
      _initScroll () {
       this.ratingScroll = new BScroll(this.$refs.ratingsDom, {click: true})
@@ -109,15 +115,15 @@ export default {
 <style lang='scss' scoped>
 .ratings-content{
         width: 100%;
+        // height: 100%;
       }
 .ratings{
-  position: absolute;
-  width: 100%;
-  top: 177px;
-  bottom: 46px;
-  left: 0;
-  overflow: hidden;
-  display: flex;
+    position: absolute;
+    top: 176px;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
   .overview{
     padding:18px 0px;
     display: flex;
@@ -175,6 +181,78 @@ export default {
   .rating-wrapper{
     height: 100%;
     overflow: hidden;
+    padding: 0 18px;
+    .rating-item{
+      padding: 18px 0;
+      border-bottom: 1px solid rgba(7, 17, 27,0.1);
+      display: flex;
+      .avatar{
+        flex: 0 0 28px;
+        width: 28px;
+        img{
+          border-radius: 50%;
+          display: block;
+        }
+      }
+      .content{
+        flex:1;
+        padding-left: 12px;
+        position: relative;
+        .username{
+          color:rgb(7,17,27);
+          line-height: 12px;
+          margin-bottom: 4px;
+        }
+        .star-wrapper{
+          //  width: 100%;
+           display: inline-block;
+           line-height: 12px;
+          //  height: 12px;
+        }
+         .time{
+            font-size: 10px;
+            font-weight: 200;
+            color:rgb(147,153,159);
+            line-height: 12px;
+            margin-left: 6px;
+          }
+        .rating-date{
+          position: absolute;
+          right: 0;
+          top:0;
+          font-size: 10px;
+          font-weight: 200;
+          color:rgb(147,153,159);
+          line-height: 12px;
+        }
+        .text{
+          font-size: 12px;
+          color:#000;
+          line-height: 18px;
+        }
+        .recommend{
+          font-size: 0;
+          .icon-thumb_up{
+            font-size: 9px;
+            vertical-align: bottom;
+            color:#00a0dc;
+            margin-right: 8px;
+          }
+          .recommend-item{
+            display: inline-block;
+            margin-right: 8px;
+            margin-bottom: 4px;
+            padding: 0 6px;
+            border:1px solid rgba(7, 17, 27,0.1);
+            background-color: #fff;
+            border-radius: 2px;
+            font-size: 9px;
+            color:rgb(147,153,159);
+            line-height: 16px;
+          }
+        }
+      }
+    }
   }
 }
 </style>
