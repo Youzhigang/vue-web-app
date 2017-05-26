@@ -50,20 +50,20 @@ export default {
       }
   },
   methods: {
-      select (type, event) {
-          console.log(type);
-          if (!event._constructed) {
-              return
-          }
-          this.$emit('select', type)
-      },
-      toggleContent (e) {
+        select (type, event) {
+            console.log(type);
+            if (!event._constructed) {
+                return
+            }
+            this.$emit('select', type)
+        },
+        toggleContent (e) {
             if (!e._constructed) {
               return
             }
             this.$emit('toggle')
-      }
-  },
+        }
+     },
   computed: {
         positive () {
             return this.ratings.filter(i => i.rateType === POSITIVE)

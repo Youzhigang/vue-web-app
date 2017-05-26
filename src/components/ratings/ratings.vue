@@ -19,13 +19,15 @@
       </div>
       <split></split>
       <ratingselect
-        :ratings='ratings.ratings' 
+        :ratings='ratings' 
         :selectType='selectType' 
         :onlyContent='onlyContent'
+        @toggle='toggle'
+        @select='selectRating'
       ></ratingselect>
       <div class="rating-wrapper" >
         <ul>
-          <li v-for="rating in ratings" class="rating-item">
+          <li v-for="rating in ratings" class="rating-item" v-show="needShow(rating.rateType,rating.text )">
             <div class="avatar">
               <img :src="rating.avatar" alt="" width="28" height="28"> 
             </div>
@@ -54,6 +56,7 @@ import split from '../split/split';
 import star from '../star/star';
 import ratingselect from '../ratingselect/ratingselect';
 import BScroll from 'better-scroll';
+// BScroll 使用 ,父元素高度 <=子元素高度, 都不设置height就可以
 import {formatDate} from '../../common/js/utils.js';
 
 const ERR_OK = 200
@@ -104,6 +107,27 @@ export default {
   methods: {
      _initScroll () {
       this.ratingScroll = new BScroll(this.$refs.ratingsDom, {click: true})
+    },
+    toggle () {
+        this.onlyContent = !this.onlyContent
+        this.$nextTick(() => {
+            this.ratingScroll.refresh()
+        })
+    },
+    selectRating (type) {
+        this.selectType = type
+        this.$nextTick(() => {
+          this.ratingScroll.refresh()
+        })
+    },
+    needShow (type, text) {
+      if (this.onlyContent && !text) {
+              return false
+          } else if (this.selectType === ALL) {
+              return true
+          } else {
+              return type === this.selectType
+          }
     }
   },
   components: {
