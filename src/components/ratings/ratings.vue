@@ -22,6 +22,7 @@
         :ratings='ratings' 
         :selectType='selectType' 
         :onlyContent='onlyContent'
+        :desc='desc'
         @toggle='toggle'
         @select='selectRating'
       ></ratingselect>
