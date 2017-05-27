@@ -126,9 +126,9 @@ export default {
   methods: {
     _initScroll () {
       // console.log(this.$refs)
-      this.menuScroll = new BScroll(this.$refs.menuWrapper, {click: true})
+      this.menuScroll = new BScroll(this.$refs.menuWrapper, {click: true, bounce: false})
       this.foodScroll = new BScroll(this.$refs.foodsWrapper, {
-        probeType: 3, click: true
+        probeType: 3, click: true, bounce: true
       })
       this.foodScroll.on('scroll', (pos) => {
         this.scrollY = Math.abs(Math.round(pos.y))

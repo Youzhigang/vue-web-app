@@ -106,7 +106,7 @@ export default {
   },
   methods: {
      _initScroll () {
-      this.ratingScroll = new BScroll(this.$refs.ratingsDom, {click: true})
+      this.ratingScroll = new BScroll(this.$refs.ratingsDom, {click: true, bounce: false})
     },
     toggle () {
         this.onlyContent = !this.onlyContent

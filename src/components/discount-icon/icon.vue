@@ -16,7 +16,7 @@ export default {
       type: Number
     },
     size: {
-      type: String  // 白底 _1:24@2x 36@3x  // _2: 32@2x 48@3x   
+      type: String  // 白底 _1:24@2x 36@3x  // _2: 32@2x 48@3x
                     // 反色 _3:24@2x 36@3x   _4: 32@2x 48@3x
     },
     styl: {

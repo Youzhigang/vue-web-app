@@ -3,7 +3,7 @@
  * @param {any} date
  * @param {any} fmt     'yyyy-mm-dd HH:mm:ss'
  */
-export function formatDate (date, fmt) {
+function formatDate (date, fmt) {
     if ((/(y+)/).test(fmt)) {  // 匹配yyyy
         fmt = fmt.replace(RegExp.$1, ((date).getFullYear() + '').substr(4 - RegExp.$1.length)) // yyyy替换为2xxx年
     }
@@ -31,3 +31,5 @@ function padLeftZero (str) {
     return ('00' + str).substr(str.length)
 }
 
+// export default formatDate
+module.exports.formatDate = formatDate
