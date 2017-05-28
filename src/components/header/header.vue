@@ -164,9 +164,9 @@ export default {
           .text{
             height: 12px;
             margin-left: 4px;
-            line-height: 14px;
+            line-height: 12px;
             font-size: 10px;
-            vertical-align: top;
+            vertical-align: bottom;
           }
         }
         .supports-count{
