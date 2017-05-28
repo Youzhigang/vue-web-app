@@ -40,12 +40,14 @@
     <split></split>
     <div class="seller-scene">
       <div class="title">商家实景</div>
-      <ul class="pic-wrapper" ref="picDom">
-        <!--img-->
-        <li v-for="pic in seller.pics" class="pic-item">
-          <img :src="pic" alt="">
-        </li>
-      </ul>
+      <div class="pic-wrapper" ref="picDom">
+        <ul class="pic-list" ref="picList">
+          <!--img-->
+          <li v-for="pic in seller.pics" class="pic-item">
+            <img :src="pic" alt="">
+          </li>
+        </ul>
+      </div>
     </div>
     <split></split>
     <div class="seller-info">
@@ -88,7 +90,7 @@ export default {
     }
   },
   mounted () {
-    console.log(this.favor)
+    // console.log(this.favor)
     this.favor = getLocalItem(this.seller_id, _KEY) || false
     this.$nextTick(() => {
       this._initScroll()
@@ -98,6 +100,12 @@ export default {
   watch: {
      favor: function (v) {
       saveLocalItem(this.seller_id, _KEY, v)
+     },
+     seller: function () {
+       this.$nextTick(() => {
+         this._initPicScroll()
+         this._initPicScroll()
+       })
      }
   },
   computed: {
@@ -114,14 +122,23 @@ export default {
       }
     },
     _initPicScroll () {
-      // if (!this.picScroll) {
-      //   this.picScroll = new BScroll(this.$refs.picDom, {
-      //     click: true, scrollX: true, eventPassthrough: 'vertical'
-      //   })
-      // } else {
-      //   this.picScroll.refresh()
-      // }
-      console.log(this.$refs.picDom)
+      if (!this.picScroll) {
+        if (this.seller.pics) {
+          console.log(123)
+          let picWidth = 120
+          let margin = 6;
+          let width = (picWidth + margin) * this.seller.pics.length - margin
+          this.$refs.picList.style.width = width + 'px'
+          this.picScroll = new BScroll(this.$refs.picDom, {
+            click: true,
+            scrollX: true,
+            eventPassthrough: 'vertical' //
+          })
+         }
+      } else {
+        this.picScroll.refresh()
+      }
+      console.log(this.$refs.picDom, 4444444444444444)
       // this.picScroll = new BScroll(this.$refs.picDom)
     },
     toggleFavor (e) {
@@ -196,6 +213,7 @@ export default {
           color:rgb(240,20,20);
         }
         .text{
+          width: 40px;
           margin-top: 4px;
           font-size: 10px;
           color: rgb(77,86,93);
@@ -267,8 +285,11 @@ export default {
     padding:18px;
     .pic-wrapper{
       padding-top: 4px;
-      // overflow: hidden;
-      width: 150%;
+      overflow: hidden;
+      white-space: nowrap;
+      width: 100%;
+    .pic-list{
+     
       .pic-item{
         // float: left;
         display: inline;
@@ -277,7 +298,11 @@ export default {
           width: 120px;
           height: 90px;
         }
+        &:last-child{
+          margin-right: 0px;
+        }
       }
+    }
     }
   }
   .seller-info{
