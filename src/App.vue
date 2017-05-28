@@ -16,28 +16,32 @@
       content
     </div>-->
     <keep-alive>
-    <router-view :seller='seller' ></router-view>
+    <router-view :seller='seller' :seller_id='seller_id'></router-view>
     </keep-alive>
   </div> 
 </template>
 
 <script>
 import vheader from './components/header/header'
+import { getUrlParam } from './common/js/utils.js'
 
 const ERR_OK = 200
 export default {
   name: 'app',
   data () {
     return {
-      seller: {}
+      seller: {},
+      seller_id: getUrlParam('id') || 'test'
     }
   },
   mounted () {
-    this.$http.get('/api/seller').then(
+    this.$http.get('/api/seller?id='+this.seller_id).then(
       res => {
         if (res.status === ERR_OK) {
           console.log(res.data.seller)
           this.seller = res.data.seller
+          // this.$set(this.seller, 'id', this.seller_id)
+          // this.seller = Object.assign({}, {'id': this.seller_id}, res.data.seller);
         }
       }
     ).catch(

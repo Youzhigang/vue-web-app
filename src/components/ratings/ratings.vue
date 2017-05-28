@@ -11,8 +11,8 @@
           <ul class="rating-star">
             <li class="service-score"><span class="text"
               >服务态度</span><span class="star-wrapper"
-              ><star :size=36 :score='seller.serviceScore'></star></span>{{seller.serviceScore}}</li>
-            <li class="food-score"><span class="text">商家评分</span><span class="star-wrapper"><star :size=36 :score='seller.foodScore'></star></span>{{seller.foodScore}}</li>
+              ><star :size=36 :score='seller.serviceScore'></star></span><span class="score">{{seller.serviceScore}}</span></li>
+            <li class="food-score"><span class="text">商家评分</span><span class="star-wrapper"><star :size=36 :score='seller.foodScore'></star></span><span class="score">{{seller.foodScore}}</span></li>
             <li class="deliver-time"><span class="text">送达时间</span><span class="star-wrapper">{{seller.deliveryTime}}分钟</span></li>
           </ul>
         </div>
@@ -199,6 +199,10 @@ export default {
           font-size: 12px;
           color:rgb(147,153,159);
           line-height: 18px;
+        }
+        .score{
+          vertical-align: top;
+          font-size: 12px;
         }
       }
     }

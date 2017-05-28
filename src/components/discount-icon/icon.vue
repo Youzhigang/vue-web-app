@@ -46,7 +46,7 @@ export default {
 
 .icon{
     display: inline-block;
-    
+    vertical-align: bottom;
     &.decrease_4{
         @include bg-image('decrease_4');
     }
